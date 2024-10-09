@@ -1,5 +1,8 @@
 import express from 'express'
 import 'dotenv/config'
+import connectToMongoDB from './connect'
+
+connectToMongoDB()
 
 const app = express()
 
