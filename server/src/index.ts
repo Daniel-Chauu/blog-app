@@ -1,6 +1,7 @@
 import express from 'express'
 import 'dotenv/config'
 import connectToMongoDB from './connect'
+import rootRoute from './routes/root'
 
 connectToMongoDB()
 
@@ -9,9 +10,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+app.use('/api/v1', rootRoute)
 
 const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
