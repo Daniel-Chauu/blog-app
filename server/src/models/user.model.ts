@@ -1,22 +1,35 @@
+import { hashedPassword } from './../utilities/bcrypt'
 import mongoose, { Schema } from 'mongoose'
 
-export interface User {
+export interface UserType {
   username: string
+  email: string
   password: string
 }
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<UserType>({
   username: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  email: {
     type: String,
     required: true,
     unique: true
   },
   password: {
     type: String,
-    required: true,
-    unique: true
+    required: true
   }
 })
 
-const User = mongoose.model<User>('User', userSchema)
+userSchema.pre('save', function (next) {
+  if (!this.isModified('password')) return next()
+  const newPassword = hashedPassword(this.password)
+  this.password = newPassword
+  next()
+})
+
+const User = mongoose.model<UserType>('User', userSchema)
 export default User

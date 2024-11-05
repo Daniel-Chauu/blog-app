@@ -11,7 +11,7 @@ const validate = (validation: RunnableValidationChains<ValidationChain>) => {
     // sequential processing, stops running validations chain if one fails.
     await validation.run(req)
     const errors = validationResult(req)
-    if (errors.isEmpty()) next()
+    if (errors.isEmpty()) return next()
     const errorsObject = errors.mapped()
     const entityErrors = new EntityError({ errors: {} })
     const errorStatus = new ErrorWithStatus('', HTTP_STATUS_CODE.BAD_REQUEST)
