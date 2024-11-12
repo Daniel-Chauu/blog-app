@@ -1,13 +1,5 @@
 import HTTP_STATUS_CODE from '~/constants/httpStatusCode'
-
-export class ErrorWithStatus {
-  message: string
-  status: number
-  constructor(message: string, status: number) {
-    this.message = message
-    this.status = status
-  }
-}
+import AUTH_MESSAGE from '~/messages/auth.message'
 
 type ErrorsType = Record<
   string,
@@ -17,18 +9,29 @@ type ErrorsType = Record<
   }
 >
 
-export class EntityError extends ErrorWithStatus {
+class ErrorWithStatus {
+  message: string
+  status: number
+  constructor({ message, status }: { message: string; status: number }) {
+    this.message = message
+    this.status = status
+  }
+}
+
+class Entity extends ErrorWithStatus {
   errors: ErrorsType
   constructor({
-    errors,
+    message = AUTH_MESSAGE.VALIDATION_ERROR,
     status = HTTP_STATUS_CODE.UNPROCESSABLE_ENTITY,
-    message = 'Validation error'
+    errors
   }: {
-    errors: ErrorsType
-    status?: number
     message?: string
+    status?: number
+    errors: ErrorsType
   }) {
-    super(message, status)
+    super({ message, status })
     this.errors = errors
   }
 }
+
+export { ErrorWithStatus, Entity }

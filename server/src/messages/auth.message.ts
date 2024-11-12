@@ -1,4 +1,5 @@
 const AUTH_MESSAGE = {
+  VALIDATION_ERROR: 'Validation error',
   USERNAME_REQUIRED: 'Username is required',
   EMAIL_REQUIRED: 'Email is required',
   PASSWORD_STRONG:
