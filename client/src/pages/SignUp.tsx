@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signupSchema } from "../validations/authValidation";
@@ -27,6 +27,7 @@ const SignUp = () => {
     confirmPassword: "",
   });
   const [errors, setErrors] = useState<ErrorsType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleFormValidation = async (value: any) => {
@@ -65,6 +66,7 @@ const SignUp = () => {
     // handle form submission
 
     try {
+      setLoading(true);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { confirmPassword, ...dataFetch } = formdata;
       const res = await fetch(`${host}/auth/signup`, {
@@ -74,17 +76,14 @@ const SignUp = () => {
         },
         body: JSON.stringify(dataFetch),
       });
-      try {
-        if (res.ok) {
-          const data = await res.json();
-          toast.success(data.message);
-          navigate("/sign-in");
-        } else {
-          const data = await res.json();
-          toast.error(data.message);
-        }
-      } catch (error) {
-        console.log("error", error);
+      if (res.ok) {
+        const data = await res.json();
+        toast.success(data.message);
+        setLoading(false);
+        navigate("/sign-in");
+      } else {
+        const data = await res.json();
+        toast.error(data.message);
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -156,8 +155,19 @@ const SignUp = () => {
               }
             />
 
-            <Button gradientDuoTone="purpleToPink" type="submit">
-              Sign Up
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="ml-2">Loading...</span>
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
           </form>
           <div className="mt-2">
