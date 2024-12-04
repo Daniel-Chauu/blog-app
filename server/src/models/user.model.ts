@@ -1,7 +1,8 @@
 import { hashedPassword } from './../utilities/bcrypt'
-import mongoose, { Schema } from 'mongoose'
+import mongoose, { ObjectId, Schema } from 'mongoose'
 
 export interface UserType {
+  _id?: ObjectId
   username: string
   email: string
   password: string

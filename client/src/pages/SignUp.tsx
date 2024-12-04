@@ -61,10 +61,7 @@ const SignUp = () => {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // handle form validation
-
     // handle form submission
-
     try {
       setLoading(true);
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

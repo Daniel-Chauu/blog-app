@@ -1,8 +1,8 @@
-import express from 'express'
+import cors from 'cors'
 import 'dotenv/config'
+import express from 'express'
 import connectToMongoDB from './connect'
 import rootRoute from './routes/root'
-import cors from 'cors'
 connectToMongoDB()
 
 const app = express()
